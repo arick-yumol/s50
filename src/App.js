@@ -4,17 +4,19 @@ import { Fragment } from 'react';	// <React.Fragment> to enclose components into
 import './App.css';
 import AppNavbar from './components/AppNavbar';
 // pages
-import Home from './pages/Home'
+import Home from './pages/Home';
+import Courses from './pages/Courses';
 
 // Bootstrap
 import { Container } from 'react-bootstrap';
 
 function App() {	// main function
-    return (	// return jsx
+    return(	// return jsx
         <Fragment>
             <AppNavbar />
             <Container>
                 <Home />
+                <Courses />
             </Container>
         </Fragment>
     );
