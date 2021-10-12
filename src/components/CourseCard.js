@@ -21,20 +21,27 @@ export default function CourseCard ({courseProp}) {
 		// setter = updated value;
 	const [count, setCount] = useState(0)
 	// const [count, setCount] = useState("kahit Ano")	// will display "kahit Ano" as the count
+	const [seats, setSeats] = useState(10)
 
 	console.log(useState(0))
 
-	function enroll () {
-		setCount(count + 1);
-		console.log('Enrollees: ' + count);
-		
-	}
-
-	/* // ES6 arrow function works
-	const enroll = () => {
+	/*function enroll () {
 		setCount(count + 1);
 		console.log('Enrollees: ' + count);
 	}*/
+
+	 // ES6 arrow function works
+	const enroll = () => {
+		if (seats > 0) {
+			setCount(count + 1);
+			console.log('Enrollees: ' + count);
+			setSeats(seats - 1);
+			console.log('Seats:' + seats)
+		}
+		else {
+			alert('Maximum number of seats have been reached')
+		}
+	}
 
 	return(
 		<Row>
@@ -49,6 +56,7 @@ export default function CourseCard ({courseProp}) {
 							<p>PhP: {price}</p>
 						</Card.Text>
 						<Card.Text>Enrollees: {count}</Card.Text>
+						<Card.Text>Seats available: {seats}</Card.Text>
 						<Button variant="primary" onClick={enroll}>Enroll</Button>
 					</Card.Body>
 				</Card>
@@ -69,6 +77,12 @@ CourseCard.propTypes = {
 	})
 }
 
+/*
+mounting > updating > unmounting
+mounting > rendering > re-rendering > unmounting
+
+login page (mounting) > typing data in inputs (rendering) (re-rendering)
+*/
 
 
 /*// First de-structured form

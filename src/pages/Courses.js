@@ -14,7 +14,7 @@ export default function Courses () {
 	// Multiple components created through the .map() method must have a UNIQUE KEY that will help ReactJS to identify which /elements have been changed, added or removed
 	// key={course.id} = to keep track the data of courses
 	// .map() method must always have a key for identification of every component inside the array
-	const courses = courseData.map(course => {
+	const courses = courseData.map(course => {	// displays all courseData available in the database
 		return(
 			<CourseCard key={course.id} courseProp={course} />
 		)
