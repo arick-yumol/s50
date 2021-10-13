@@ -52,7 +52,7 @@ export default function CourseCard ({courseProp}) {
 		}
 	}
 
-	return(
+	/*return(
 		<Row>
 			<Col>
 				<Card className="mt-3">
@@ -74,6 +74,27 @@ export default function CourseCard ({courseProp}) {
 				</Card>
 			</Col>
 		</Row>
+	)*/
+
+	return(
+		<Card>
+			<Card.Body>
+				<Card.Title><h2>{name}</h2></Card.Title>
+				<Card.Subtitle>Description:</Card.Subtitle>
+				<Card.Text>{description}</Card.Text>
+				<Card.Subtitle>Price:</Card.Subtitle>
+				<Card.Text>Php {price}</Card.Text>
+				<Card.Text>Enrollees: {count}</Card.Text>
+				<Card.Text>Seats: {seats}</Card.Text>
+				{isOpen ? 
+				<Button variant="primary" onClick={enroll}>Enroll</Button>
+				:
+				<Button variant="primary" disabled>Enroll</Button>
+				}
+
+			</Card.Body>
+		</Card>
+
 	)
 }
 

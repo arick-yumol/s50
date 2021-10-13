@@ -1,6 +1,6 @@
 // Import React from 'react';
-// Altenative
-import { Fragment } from 'react';	// <React.Fragment> to enclose components into a parent element to avoid errors
+// Alternative
+import { Fragment, useState } from 'react';	// <React.Fragment> to enclose components into a parent element to avoid errors
 import './App.css';
 import AppNavbar from './components/AppNavbar';
 // pages
@@ -8,22 +8,54 @@ import Home from './pages/Home';
 import Courses from './pages/Courses';
 import Register from './pages/Register';
 import Login from './pages/Login';
-
+import Error from './pages/Error'
+// routing components
+import { BrowserRouter as Router } from 'react-router-dom';	// will synchronize URL that will be shown in the web browser
+import { Route, Switch } from 'react-router-dom';	// switch will declare the routes
 
 // Bootstrap
 import { Container } from 'react-bootstrap';
+// React Context
+import UserContext from './UserContext';
+
+
+/*
+BrowserRouter component will enable us to simulate page navigation by synchronizing the shown content and the shown URL in the web browser
+
+Switch component then declares with Route we can go to
+
+Route component will render component within the switch container based on the defined route
+
+exact property disables the partiak matching for a route makes sure that it only returns the route if the path is an exact match to the current url
+
+If the exact and path is missing, the Route component will make it undefined route and will be loaded into a specified component
+
+*/
+
 
 function App() {	// main function
+
+	// add a state hook for user,
+	// The .getItem() method returns value of the specified storage object item
+	const [user, setUser] = useState({email: localStorage.getItem('email')})
+
+	// Provider Component that allows consuming components to subscribe to context changes
     return(	// return jsx
-        <Fragment>
-            <AppNavbar />
-            <Container>
-            	<Register />
-            	<Login />
-                <Home />
-                <Courses />
-            </Container>
-        </Fragment>
+    	<UserContext.Provider value={ {user, setUser} }>
+		    <Router>
+		        < AppNavbar />
+		        <Container>
+		            <Switch>
+			            < Route exact path="/" component={Home} />
+			            < Route exact path="/courses" component={Courses} />
+			            < Route exact path="/register" component={Register} />
+		            	< Route exact path="/login" component={Login} />
+		            	{/*< Route path="/" component={Error} />*/}
+		            	< Route component={Error} />
+		            </Switch>
+		        </Container>
+		    </Router>
+        </UserContext.Provider>
     );
 }
 
