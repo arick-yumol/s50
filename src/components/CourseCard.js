@@ -1,6 +1,6 @@
 // Totally de-structered
 // Bootstrap
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Row, Col, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';	// comes from 'react'
 
@@ -20,10 +20,19 @@ export default function CourseCard ({courseProp}) {
 		// getter = stored initial(default value)
 		// setter = updated value;
 	const [count, setCount] = useState(0)
-	// const [count, setCount] = useState("kahit Ano")	// will display "kahit Ano" as the count
+	// const [count, setCount] = useState("kahit Ano")	// will display "kahit Ano" as the count. useState() accepts: number, string, boolean, etc.(?)
 	const [seats, setSeats] = useState(10)
 
-	console.log(useState(0))
+	// state hook that indicates the button for enrollment
+	const [isOpen, setIsOpen] = useState(true)
+
+	useEffect(() => {
+		if (seats === 0) {
+			setIsOpen(false);
+		}
+	}, [seats])
+
+	// console.log(useState(0))
 
 	/*function enroll () {
 		setCount(count + 1);
@@ -57,7 +66,10 @@ export default function CourseCard ({courseProp}) {
 						</Card.Text>
 						<Card.Text>Enrollees: {count}</Card.Text>
 						<Card.Text>Seats available: {seats}</Card.Text>
-						<Button variant="primary" onClick={enroll}>Enroll</Button>
+						{isOpen ? 
+							<Button variant="primary" onClick={enroll}>Enroll</Button> :
+							<Button variant="primary" disabled>Enroll</Button>
+						}
 					</Card.Body>
 				</Card>
 			</Col>
