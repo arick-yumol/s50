@@ -1,6 +1,7 @@
 // Import React from 'react';
 // Alternative
-import { Fragment, useState } from 'react';	// <React.Fragment> to enclose components into a parent element to avoid errors
+// import { Fragment } from 'react';	// <React.Fragment> to enclose components into a parent element to avoid errors
+import { useState, useEffect } from 'react';
 import './App.css';
 import AppNavbar from './components/AppNavbar';
 // pages
@@ -8,7 +9,8 @@ import Home from './pages/Home';
 import Courses from './pages/Courses';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import Error from './pages/Error'
+import Logout from './pages/Logout';
+import Error from './pages/Error';
 // routing components
 import { BrowserRouter as Router } from 'react-router-dom';	// will synchronize URL that will be shown in the web browser
 import { Route, Switch } from 'react-router-dom';	// switch will declare the routes
@@ -17,6 +19,7 @@ import { Route, Switch } from 'react-router-dom';	// switch will declare the rou
 import { Container } from 'react-bootstrap';
 // React Context
 import UserContext from './UserContext';
+// import UserProvider from './UserContext';	// alternative
 
 
 /*
@@ -32,16 +35,37 @@ If the exact and path is missing, the Route component will make it undefined rou
 
 */
 
+/*
+React Context is a global state to the app. It is a way to make a particular data available to all the components no matter how they are nested. Context helps you to broadcast the data and changes happening to that data to all components.
+*/
+
 
 function App() {	// main function
 
 	// add a state hook for user,
 	// The .getItem() method returns value of the specified storage object item
-	const [user, setUser] = useState({email: localStorage.getItem('email')})
+	// const [user, setUser] = useState({email: localStorage.getItem('email')})
+	const [user, setUser] = useState({
+		accessToken: localStorage.getItem('accessToken'),
+		email: localStorage.getItem('email'),
+		isAdmin: localStorage.getItem('isAdmin') === 'true'
+	})
+
+	// Function for clearing localStorage on logout
+	const unsetUser = () => {
+		localStorage.clear()
+	}
+
+	// Used to check if the user information is properly stored upon login and localStorage information is cleared upon logout. This is optional
+	useEffect(() => {
+		console.log(user);
+		console.log(localStorage);
+	}, [user])
 
 	// Provider Component that allows consuming components to subscribe to context changes
     return(	// return jsx
-    	<UserContext.Provider value={ {user, setUser} }>
+    	// <UserProvider value={ {user, setUser, unsetUser} }></UserProvider>	// alternative
+    	<UserContext.Provider value={ {user, setUser, unsetUser} }>
 		    <Router>
 		        < AppNavbar />
 		        <Container>
@@ -50,6 +74,7 @@ function App() {	// main function
 			            < Route exact path="/courses" component={Courses} />
 			            < Route exact path="/register" component={Register} />
 		            	< Route exact path="/login" component={Login} />
+		            	< Route exact path="/logout" component={Logout} />
 		            	{/*< Route path="/" component={Error} />*/}
 		            	< Route component={Error} />
 		            </Switch>

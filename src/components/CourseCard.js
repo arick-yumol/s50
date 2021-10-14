@@ -1,7 +1,8 @@
 // Totally de-structered
 // Bootstrap
 import { useState, useEffect } from 'react';
-import { Button, Row, Col, Card } from 'react-bootstrap';
+// import { Button, Row, Col, Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';	// comes from 'react'
 
 export default function CourseCard ({courseProp}) {

@@ -1,9 +1,11 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';	// npm install sweetalert2 in CLi. totally optional (just a visual enhancement of the normal alert)
-
+import { Redirect } from 'react-router-dom';
+import UserContext from '../UserContext';
 
 export default function Register () {
+	const { user } = useContext(UserContext);
 
 	// State hooks to store the values of the input fields
 	const [email, setEmail] = useState('')
@@ -48,54 +50,58 @@ export default function Register () {
 	// The data in the state has updated the view
 
 	return(
-		<Fragment>
-			<h1>Register</h1>
-			<Form onSubmit={(e) => registerUser(e)}>
-				<Form.Group>
-					<Form.Label>Email address:</Form.Label>
-					<Form.Control
-						type="email"
-						placeholder="Enter email"
-						value={email}
-						onChange={e => setEmail(e.target.value)}	// the e.target.value property allows us to gain acces to the input field's current value to be used when submitting form data
-						required
-					/>
-					<Form.Text className="text-muted">
-						We'll never share your email with anyone else.
-					</Form.Text>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Password</Form.Label>
-					<Form.Control
-						type="password"
-						placeholder="Enter your Password"
-						value={password1}
-						onChange={e => setPassword1(e.target.value)}
-						required
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Verify Password</Form.Label>
-					<Form.Control
-						type="password"
-						placeholder="Verify your Password"
-						value={password2}
-						onChange={e => setPassword2(e.target.value)}
-						required
-					/>
-				</Form.Group>
+		// (user.email !== null) ?
+		(user.accessToken !== null) ?
+		< Redirect to="/"/>
+			:
+			<Fragment>
+				<h1>Register</h1>
+				<Form onSubmit={(e) => registerUser(e)}>
+					<Form.Group>
+						<Form.Label>Email address:</Form.Label>
+						<Form.Control
+							type="email"
+							placeholder="Enter email"
+							value={email}
+							onChange={e => setEmail(e.target.value)}	// the e.target.value property allows us to gain acces to the input field's current value to be used when submitting form data
+							required
+						/>
+						<Form.Text className="text-muted">
+							We'll never share your email with anyone else.
+						</Form.Text>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Password</Form.Label>
+						<Form.Control
+							type="password"
+							placeholder="Enter your Password"
+							value={password1}
+							onChange={e => setPassword1(e.target.value)}
+							required
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Verify Password</Form.Label>
+						<Form.Control
+							type="password"
+							placeholder="Verify your Password"
+							value={password2}
+							onChange={e => setPassword2(e.target.value)}
+							required
+						/>
+					</Form.Group>
 
-				{isActive ?
-					<Button variant="primary" type="submit" id="submitBtn">
-					Submit
-					</Button>
-					:
-					<Button variant="primary" type="submit" id="submitBtn" disabled>
-					Submit
-					</Button>
-				}
-			</Form>
-		</Fragment>
+					{isActive ?
+						<Button variant="primary" type="submit" id="submitBtn">
+						Submit
+						</Button>
+						:
+						<Button variant="primary" type="submit" id="submitBtn" disabled>
+						Submit
+						</Button>
+					}
+				</Form>
+			</Fragment>
 	)
 }
 
