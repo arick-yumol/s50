@@ -8,14 +8,21 @@ export default function Register () {
 	const history = useHistory();
 	const { user } = useContext(UserContext);
 
-	// State hooks to store the values of the input fields
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('');
-	// const [password1, setPassword1] = useState('');
-	const [password2, setPassword2] = useState('');
+	// // State hooks to store the values of the input fields
+	// const [email, setEmail] = useState('')
+	// const [password, setPassword] = useState('');
+	// // const [password1, setPassword1] = useState('');
+	// const [password2, setPassword2] = useState('');
+	// const [firstName, setFirstName] = useState('');
+	// const [lastName, setLastName] = useState('');
+	// const [mobileNo, setMobileNo] = useState('');
+
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState('');
 	const [mobileNo, setMobileNo] = useState('');
+	const [password, setPassword] = useState('');
+	const [password2, setPassword2] = useState('');
 
 	const [isActive, setIsActive] = useState(false);
 
@@ -31,7 +38,7 @@ export default function Register () {
 	useEffect(() => {
 		// Validation to enable submit button when all fields are populated and both passwords match
 		// if ((email !== '' && password1 !== '' && password2 !== '' && firstName !== '' && lastName !== '' && mobileNo !== '') && (password1 === password2)) {	// 1st condition checks if all fields are filled while 2nd condition checks if both passwords are the same
-		if ((firstName !== '' && lastName !== '' && email !== '' && mobileNo !== '' && password !== '' && password2 !== '') && (mobileNo.length >= 11)) {	// 1st condition checks if all fields are filled while 2nd condition checks if both passwords are the same
+		if ((firstName !== '' && lastName !== '' && email !== '' && mobileNo !== '' && password !== '' && password2 !== '') && (mobileNo.length >= 11) && (password === password2)) {	// 1st condition checks if all fields are filled while 2nd condition checks if both passwords are the same
 			setIsActive(true)
 		}
 		else {
@@ -54,19 +61,14 @@ export default function Register () {
 		// 	text: 'Thank you for registering!'
 		// })
 
-		fetch('http://localhost:4000/users/register', {
+		fetch('http://localhost:4000/users/checkEmail', {
 			method: 'POST',
 			headers: {
 				'Content-type': 'application/json'
 			},
-			body: {
-				firstName: firstName,
-				lastName: lastName,
-				email: email,
-				mobileNo: mobileNo,
-				password: password
-				// password: password1
-			}
+			body: JSON.stringify({
+				email: email
+			})
 		})
 		.then(res => res.json())
 		.then(data => {
@@ -74,26 +76,53 @@ export default function Register () {
 
 			if (data === true) {
 				Swal.fire({
-					title: 'Registration successful',
-					icon: 'success',
-					text: 'Welcome to Zuitt'
+					title: 'Duplicate email found',
+					icon: 'error',
+					text: 'Please provide a different email'
 				})
-				history.push("/login")
 			}
 			else {
-				Swal.fire({
-					title: 'OOoooops',
-					icon: 'error',
-					text: 'This is from the outer else statement'
+				fetch('http://localhost:4000/users/register', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						firstName: firstName,
+						lastName: lastName,
+						email: email,
+						mobileNo: mobileNo,
+						password: password
+					})
 				})
+				.then(res => res.json())
+				.then(data => {
+					console.log(data)
+
+					if (data === true) {
+						Swal.fire({
+							title: 'Registration successful',
+							icon: 'success',
+							text: 'Welcome to Zuitt!'
+						})
+						history.push('/login')
+					}
+					else {
+						Swal.fire({
+							title: 'OOoooops!',
+							icon: 'error',
+							text: 'Registration unsuccessful'
+						})
+					}
+				})
+				setFirstName('')
+				setLastName('')
+				setEmail('')	// without this email value will persist
+				setMobileNo('')
+				setPassword('')
+				// setPassword1('')	// without this password1 value will persist
+				setPassword2('')	// without this password2 value will persist
 			}
-			setEmail('')	// without this email value will persist
-			setPassword('')
-			// setPassword1('')	// without this password1 value will persist
-			setPassword2('')	// without this password2 value will persist
-			setFirstName('')
-			setLastName('')
-			setMobileNo('')
 		})
 	}
 
@@ -146,7 +175,7 @@ export default function Register () {
 					<Form.Group>
 						<Form.Label>Mobile Number:</Form.Label>
 						<Form.Control
-							type="tel"
+							type="text"
 							placeholder="Enter mobile number"
 							value={mobileNo}
 							onChange={e => setMobileNo(e.target.value)}
