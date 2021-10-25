@@ -60,7 +60,7 @@ export default function Login () {
 				password: password 	// email from const [password, setPassword] = useState('')
 			})
 		})
-		.then(res => res.json())
+		.then(res => res.json())	// parses objects from backend to frontend
 		.then(data => {
 			console.log(data)
 
@@ -69,7 +69,7 @@ export default function Login () {
 				setUser({ accessToken: data.accessToken });
 
 				Swal.fire({
-					title: 'Yaaaaaaa!',
+					title: 'Yaaaaaaay!',
 					icon: 'success',
 					text: 'Thank you for logging in Zuitt Booking System'
 				})

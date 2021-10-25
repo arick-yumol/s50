@@ -41,7 +41,7 @@ export default function Courses () {
 
 	const { user } = useContext(UserContext);
 
-	const [allCourses, setAllCourses] = useState([])
+	const [allCourses, setAllCourses] = useState([])	// this is done so whatever setAllCourses(data) received from the backend will be stored in here
 
 	const fetchData = () => {
 		fetch('http://localhost:4000/courses/all')
@@ -63,7 +63,7 @@ export default function Courses () {
 		<Container>
 			{
 				(user.isAdmin === true) ?
-				<AdminView coursesData={allCourses}/>
+				<AdminView coursesData={allCourses} fetchData={fetchData}/>
 				:
 				<UserView coursesData={allCourses}/>
 			}

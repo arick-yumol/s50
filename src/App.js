@@ -11,6 +11,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Error from './pages/Error';
+import SpecificCourse from './pages/SpecificCourse';
 // routing components
 import { BrowserRouter as Router } from 'react-router-dom';	// will synchronize URL that will be shown in the web browser
 import { Route, Switch } from 'react-router-dom';	// switch will declare the routes
@@ -72,6 +73,7 @@ function App() {	// main function
 		            <Switch>
 			            < Route exact path="/" component={Home} />
 			            < Route exact path="/courses" component={Courses} />
+			            < Route exact path="/courses/:courseId" component={SpecificCourse}/>
 			            < Route exact path="/register" component={Register} />
 		            	< Route exact path="/login" component={Login} />
 		            	< Route exact path="/logout" component={Logout} />

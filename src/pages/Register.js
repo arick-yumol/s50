@@ -9,13 +9,12 @@ export default function Register () {
 	const { user } = useContext(UserContext);
 
 	// // State hooks to store the values of the input fields
-	// const [email, setEmail] = useState('')
-	// const [password, setPassword] = useState('');
-	// // const [password1, setPassword1] = useState('');
-	// const [password2, setPassword2] = useState('');
 	// const [firstName, setFirstName] = useState('');
 	// const [lastName, setLastName] = useState('');
+	// const [email, setEmail] = useState('')
 	// const [mobileNo, setMobileNo] = useState('');
+	// const [password1, setPassword1] = useState('');
+	// const [password2, setPassword2] = useState('');
 
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -38,7 +37,7 @@ export default function Register () {
 	useEffect(() => {
 		// Validation to enable submit button when all fields are populated and both passwords match
 		// if ((email !== '' && password1 !== '' && password2 !== '' && firstName !== '' && lastName !== '' && mobileNo !== '') && (password1 === password2)) {	// 1st condition checks if all fields are filled while 2nd condition checks if both passwords are the same
-		if ((firstName !== '' && lastName !== '' && email !== '' && mobileNo !== '' && password !== '' && password2 !== '') && (mobileNo.length >= 11) && (password === password2)) {	// 1st condition checks if all fields are filled while 2nd condition checks if both passwords are the same
+		if ((firstName !== '' && lastName !== '' && email !== '' && mobileNo !== '' && password !== '' && password2 !== '') && (mobileNo.length === 11) && (password === password2)) {	// 1st condition checks if all fields are filled while 2nd condition checks if both passwords are the same
 			setIsActive(true)
 		}
 		else {
@@ -61,6 +60,7 @@ export default function Register () {
 		// 	text: 'Thank you for registering!'
 		// })
 
+		// check the email duplicate
 		fetch('http://localhost:4000/users/checkEmail', {
 			method: 'POST',
 			headers: {
@@ -93,6 +93,7 @@ export default function Register () {
 						email: email,
 						mobileNo: mobileNo,
 						password: password
+						// password: password1 	// key = password (from backend); value = password1 (from frontend)
 					})
 				})
 				.then(res => res.json())
@@ -109,12 +110,13 @@ export default function Register () {
 					}
 					else {
 						Swal.fire({
-							title: 'OOoooops!',
+							title: 'Something Went Wrong!',
 							icon: 'error',
-							text: 'Registration unsuccessful'
+							text: 'Please Try Again!'
 						})
 					}
 				})
+				// Where you put this depends on where it will reset
 				setFirstName('')
 				setLastName('')
 				setEmail('')	// without this email value will persist
@@ -143,7 +145,7 @@ export default function Register () {
 						<Form.Label>First Name:</Form.Label>
 						<Form.Control
 							type="text"
-							placeholder="Enter first name"
+							placeholder="Enter your first name"
 							value={firstName}
 							onChange={e => setFirstName(e.target.value)}
 							required
@@ -153,7 +155,7 @@ export default function Register () {
 						<Form.Label>Last Name:</Form.Label>
 						<Form.Control
 							type="text"
-							placeholder="Enter last name"
+							placeholder="Enter your last name"
 							value={lastName}
 							onChange={e => setLastName(e.target.value)}
 							required
@@ -163,7 +165,7 @@ export default function Register () {
 						<Form.Label>Email address:</Form.Label>
 						<Form.Control
 							type="email"
-							placeholder="Enter email"
+							placeholder="Enter your email"
 							value={email}
 							onChange={e => setEmail(e.target.value)}	// the e.target.value property allows us to gain acces to the input field's current value to be used when submitting form data
 							required
@@ -176,7 +178,7 @@ export default function Register () {
 						<Form.Label>Mobile Number:</Form.Label>
 						<Form.Control
 							type="text"
-							placeholder="Enter mobile number"
+							placeholder="Enter your mobile number"
 							value={mobileNo}
 							onChange={e => setMobileNo(e.target.value)}
 							required
